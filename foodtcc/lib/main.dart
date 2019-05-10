@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:foodtcc/cardCarouselWithTitle.dart';
-import 'customIcons.dart';
 import 'data.dart';
 import 'cardScroll.dart';
-import 'simpleCard.dart';
 import 'sectionTitle.dart';
+import 'package:foodtcc/helpers.dart';
 
 void main() => runApp(MaterialApp(
       home: MyApp(),
@@ -24,6 +25,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -65,29 +67,25 @@ class _MyAppState extends State<MyApp> {
               ],
             ),
             SliverToBoxAdapter(
-              child: SectionTitle(title: 'Destaques'),
-            ),
-            SliverToBoxAdapter(
-              child: CardScrollWidget(),
-            ),
-            SliverToBoxAdapter(
-              child: CardCarouselWithTitle(
-                cardCarouselTitle: 'Pizzarias',
-                cardCarouselData: dados,
+              child: RaisedButton(
+                child: Text('Get data'),
+                onPressed: ()  async{
+                  print('pressed');
+                  var products = await getProductsByCategory(3);
+                  products.forEach((product) {
+                    print(product.id);
+                  });
+
+
+                },
               ),
             ),
-            SliverToBoxAdapter(
-              child: CardCarouselWithTitle(
-                cardCarouselTitle: 'Hamburguerias',
-                cardCarouselData: dados,
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: CardCarouselWithTitle(
-                cardCarouselTitle: 'Restaurantes',
-                cardCarouselData: dados,
-              ),
-            ),
+            // SliverToBoxAdapter(
+            //   child: SectionTitle(title: 'Destaques'),
+            // ),
+            // SliverToBoxAdapter(
+            //   child: CardScrollWidget(),
+            // ),
             SliverToBoxAdapter(
               child: CardCarouselWithTitle(
                 cardCarouselTitle: 'Pizzarias',
