@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodtcc/models/Product.dart';
+import 'package:foodtcc/models/TaxTerm.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:foodtcc/cardCarouselWithTitle.dart';
@@ -25,7 +28,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -67,34 +69,64 @@ class _MyAppState extends State<MyApp> {
               ],
             ),
             SliverToBoxAdapter(
-              child: RaisedButton(
-                child: Text('Get data'),
-                onPressed: ()  async{
-                  print('pressed');
-                  var products = await getProductsByCategory(3);
-                  products.forEach((product) {
-                    print(product.id);
-                  });
-
-
-                },
+              child: SectionTitle(
+                title: 'Destaques',
               ),
             ),
-            // SliverToBoxAdapter(
-            //   child: SectionTitle(title: 'Destaques'),
-            // ),
-            // SliverToBoxAdapter(
-            //   child: CardScrollWidget(),
-            // ),
             SliverToBoxAdapter(
-              child: CardCarouselWithTitle(
-                cardCarouselTitle: 'Pizzarias',
-                cardCarouselData: dados,
-              ),
+              child: CardScrollWidget(),
+            ),
+            SliverToBoxAdapter(
+              child: ProductList(),
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+class ProductList extends StatefulWidget {
+  @override
+  _ProductListState createState() => _ProductListState();
+}
+
+class _ProductListState extends State<ProductList> {
+  List<TaxTerm> taxTerms;
+  List<Product> allProducts;
+
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
+
+  Future _getData() async {
+    var termsList = await getTaxonomyTerms();
+    var productsList = await getAllProducts();
+
+    setState(() {
+      allProducts = productsList;
+      taxTerms = termsList;
+    });
+  }
+
+  Widget buildProductList() {
+      List<Widget> carouselList= [];
+
+      taxTerms.forEach((term) {
+        carouselList.add(
+          CardCarouselWithTitle(cardCarouselTitle: term.name, cardCarouselData: allProducts,)
+        );
+      });
+
+      return Column(children: carouselList);
+  }
+
+  @override
+  Widget build(BuildContext context) { 
+    return taxTerms == null
+        ? Center(heightFactor: 9, child: CupertinoActivityIndicator(),)
+        : buildProductList();
   }
 }
