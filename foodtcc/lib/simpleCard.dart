@@ -21,9 +21,11 @@ class SimpleCard extends StatelessWidget {
           decoration: BoxDecoration(color: Colors.white),
           child: Column(
             children: <Widget>[
-              Hero(
-                tag: imageAdress,
-                child: Container(
+              // Hero(
+              //   tag: imageAdress,
+              //   child: ,
+              // ),
+              Container(
                   width: 200,
                   height: 125,
                   // width: MediaQuery.of(context).size.width,
@@ -34,7 +36,6 @@ class SimpleCard extends StatelessWidget {
                     height: 200,
                   ),
                 ),
-              ),
               Container(
                 width: 200,
                 padding: EdgeInsets.all(10),
