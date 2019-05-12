@@ -7,6 +7,7 @@ import 'package:foodtcc/data.dart';
 import 'package:foodtcc/cardScroll.dart';
 import 'package:foodtcc/sectionTitle.dart';
 import 'package:foodtcc/helpers.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,28 +23,23 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [
-            Color(0xFF1b1e44),
-            Color(0xFF2d3447),
-          ],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              tileMode: TileMode.clamp)),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        // backgroundColor: Color(0xFFf5f7fa),
+        backgroundColor: Colors.white,
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              title: Text('SliverAppBar'),
               backgroundColor: Colors.transparent,
-              expandedHeight: 90,
+              title: Text(
+                'SliverAppBar',
+                style: TextStyle(color: Colors.redAccent, fontSize: 22),
+              ),
               centerTitle: true,
+              expandedHeight: 80,
               leading: IconButton(
                 icon: Icon(
                   Icons.menu,
-                  color: Colors.white,
+                  color: Colors.grey,
                   size: 30.0,
                 ),
                 padding: EdgeInsets.only(left: 10),
@@ -53,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                 IconButton(
                   icon: Icon(
                     Icons.search,
-                    color: Colors.white,
+                    color: Colors.grey,
                     size: 30.0,
                   ),
                   padding: EdgeInsets.only(right: 10),
@@ -67,7 +63,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             SliverToBoxAdapter(
-              child: CardScrollWidget(),
+              child: FeaturedProducts(),
             ),
             SliverToBoxAdapter(
               child: ProductList(),
@@ -77,7 +73,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }
 
 class ProductList extends StatefulWidget {
@@ -114,9 +109,12 @@ class _ProductListState extends State<ProductList> {
           .toList();
 
       if (_productsWithThisCategory.length > 0) {
-        _carouselList.add(CardCarouselWithTitle(
-          cardCarouselTitle: term.name,
-          cardCarouselData: _productsWithThisCategory,
+        _carouselList.add(Padding(
+          padding: EdgeInsets.only(bottom: 20),
+          child: CardCarouselWithTitle(
+            cardCarouselTitle: term.name,
+            cardCarouselData: _productsWithThisCategory,
+          ),
         ));
       }
     });
@@ -132,5 +130,83 @@ class _ProductListState extends State<ProductList> {
             child: CupertinoActivityIndicator(),
           )
         : buildProductList();
+  }
+}
+
+class FeaturedProducts extends StatefulWidget {
+  @override
+  _FeaturedProductsState createState() => _FeaturedProductsState();
+}
+
+class _FeaturedProductsState extends State<FeaturedProducts> {
+  @override
+  Widget build(BuildContext context) {
+    final double boxSize = MediaQuery.of(context).size.width - 50;
+
+    return Container(
+      height: 260,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: dados.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: EdgeInsets.only(left: 15),
+            child: Card(
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    width: boxSize,
+                    child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image:
+                          'https://foodapp.underbits.com.br/wp-content/uploads/2019/05/photo-1501777814630-33bc4a3c3ee7.jpg',
+                      fit: BoxFit.cover,
+                      height: 260,
+                    ),
+                  ),
+                  Container(
+                    height: 350.0,
+                    width: boxSize,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFF2d3447).withOpacity(0.1),
+                          Color(0xFF1b1e44).withOpacity(0.8),
+                        ],
+                        stops: [0.0, 1.0],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            'Título da carta',
+                            style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "SF-Pro-Text-Regular",
+                                color: Colors.white),
+                            softWrap: true,
+                          )
+                        ],
+                      ))
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

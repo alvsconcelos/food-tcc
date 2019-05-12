@@ -14,7 +14,7 @@ class CardCarouselWithTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double containerSize = 220;
+    final double containerSize = 222;
 
     return Column(
       children: <Widget>[
@@ -52,9 +52,6 @@ class CardCarouselWithTitle extends StatelessWidget {
             },
           ),
         ),
-        SizedBox(
-          height: 25,
-        )
       ],
     );
   }

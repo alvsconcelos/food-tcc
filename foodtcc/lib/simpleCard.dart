@@ -14,28 +14,25 @@ class SimpleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 200,
-      padding: EdgeInsets.only(left: 20),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          decoration: BoxDecoration(color: Colors.white),
+      padding: EdgeInsets.only(left: 15),
+      child: Card(
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           child: Column(
             children: <Widget>[
-              // Hero(
-              //   tag: imageAdress,
-              //   child: ,
-              // ),
               Container(
-                  width: 200,
-                  height: 125,
-                  // width: MediaQuery.of(context).size.width,
-                  child: FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    image: imageAdress,
-                    fit: BoxFit.cover,
-                    height: 200,
-                  ),
+                width: 200,
+                height: 125,
+                // width: MediaQuery.of(context).size.width,
+                child: FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: imageAdress,
+                  fit: BoxFit.cover,
+                  height: 200,
                 ),
+              ),
               Container(
                 width: 200,
                 padding: EdgeInsets.all(10),
@@ -80,9 +77,7 @@ class SimpleCard extends StatelessWidget {
                 ),
               )
             ],
-          ),
-        ),
-      ),
+          )),
     );
   }
 }

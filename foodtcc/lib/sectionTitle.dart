@@ -11,17 +11,12 @@ class SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 20, right: 20,),
+      padding: EdgeInsets.only(left: 20, right: 20, bottom: 10,),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(title,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: titleSize,
-                fontFamily: "Calibre-Semibold",
-                letterSpacing: -0.5,
-              )),
+              style: Theme.of(context).textTheme.title),
           hasOptions
               ? IconButton(
                   icon: Icon(
