@@ -1,6 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodtcc/TitleWithIcon.dart';
+import 'package:foodtcc/helpers.dart';
 import 'package:foodtcc/models/Product.dart';
+import 'package:foodtcc/models/Seller.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:flutter_launch/flutter_launch.dart';
 
 class SingleProductPage extends StatefulWidget {
   final Product _selectedProduct;
@@ -12,6 +17,22 @@ class SingleProductPage extends StatefulWidget {
 }
 
 class _SingleProductPageState extends State<SingleProductPage> {
+  Seller _productSeller;
+
+  Future _getSeller() async {
+    var _seller = await getSellerData(widget._selectedProduct.authorId);
+
+    setState(() {
+      _productSeller = _seller;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getSeller();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,9 +62,9 @@ class _SingleProductPageState extends State<SingleProductPage> {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Color(0xFF2d3447).withOpacity(0),
-                            Color(0xFF1b1e44).withOpacity(0.2),
-                            Color(0xFF1b1e44).withOpacity(0.6),
+                            Color(0xFF2d3447).withOpacity(0.8),
+                            Color(0xFF1b1e44).withOpacity(0),
+                            Color(0xFF1b1e44).withOpacity(0.9),
                           ],
                           stops: [0.0, 0.6, 1.0],
                         ),
@@ -60,14 +81,10 @@ class _SingleProductPageState extends State<SingleProductPage> {
                         children: <Widget>[
                           Text(
                             widget._selectedProduct.title,
-                            style: TextStyle(
-                                fontSize: 26,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "SF-Pro-Text-Regular",
-                                color: Colors.white),
+                            style: Theme.of(context).textTheme.headline,
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: 10),
+                            padding: EdgeInsets.only(top: 0),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
@@ -107,43 +124,202 @@ class _SingleProductPageState extends State<SingleProductPage> {
             // ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 60),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      widget._selectedProduct.description,
-                      style:
-                          TextStyle(fontSize: 18, color: Colors.grey.shade600),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ],
+                padding: EdgeInsets.fromLTRB(20, 60, 20, 40),
+                child: Text(
+                  widget._selectedProduct.description,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey.shade600,
+                  ),
                 ),
               ),
             ),
             SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: RaisedButton(
-                  color: Colors.redAccent.shade400,
-                  child: Container(
-                    child: Center(
-                      child: Text("Pedir pelo Whatsapp", style: TextStyle(color: Colors.white, fontSize: 18,),),
-                    ),
-                    height: 60,
-                  ),
-                  onPressed: () {},
-                  shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
-                  ),
-                ),
+              child: Center(
+                child: _productSeller == null
+                    ? CupertinoActivityIndicator()
+                    : _buildSellerData(_productSeller),
               ),
             )
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildSellerData(Seller _productSeller) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(bottom: 20),
+            child: TitleWithIcon(
+              'Dados do vendedor',
+              Icons.store,
+            ),
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(right: 20),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    width: 120,
+                    decoration: BoxDecoration(
+                      color: _productSeller.isOpen
+                          ? Colors.greenAccent.shade700
+                          : Colors.redAccent.shade200,
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        FadeInImage.assetNetwork(
+                          placeholder: 'assets/placeholder.png',
+                          image: _productSeller.logo,
+                          fit: BoxFit.cover,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 2,
+                            vertical: 5,
+                          ),
+                          child: Center(
+                            child: Text(
+                                _productSeller.isOpen
+                                    ? 'ABERTO AGORA'
+                                    : 'FECHADO',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                                softWrap: true),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      _productSeller.name,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: "Hind",
+                      ),
+                      softWrap: true,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: 5,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(right: 5),
+                            child: Icon(
+                              Icons.place,
+                              color: Theme.of(context).accentColor,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              _productSeller.address,
+                              softWrap: true,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: 5,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(right: 5),
+                            child: Icon(
+                              Icons.phone,
+                              color: Theme.of(context).accentColor,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              _productSeller.phone,
+                              softWrap: true,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: 20,
+              bottom: 30,
+            ),
+            child: RaisedButton(
+              color: Colors.redAccent.shade400,
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: Icon(
+                        Icons.send,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      "Pedir pelo Whatsapp",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    )
+                  ],
+                ),
+                height: 60,
+              ),
+              onPressed: () {
+                return whatsAppOpen(
+                  _productSeller.whatsapp,
+                  _productSeller.name,
+                );
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void whatsAppOpen(String telNum, String productName) async {
+    bool whatsapp = await FlutterLaunch.hasApp(name: "whatsapp");
+
+    if (whatsapp) {
+      await FlutterLaunch.launchWathsApp(
+          phone: telNum, message: "Olá, quero pedir o produto ${productName}");
+    } else {
+      print("Whatsapp not found");
+    }
   }
 }

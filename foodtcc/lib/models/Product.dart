@@ -8,6 +8,7 @@ class Product {
   final String promoPrice;
   final List<dynamic> featuredImage;
   final int categoryId;
+  final int authorId;
 
   Product({
     @required this.id,
@@ -17,6 +18,7 @@ class Product {
     this.promoPrice = '0',
     this.featuredImage,
     @required this.categoryId,
+    @required this.authorId,
   });
 
   factory Product.fromJson(Map<String, dynamic> jsonData) {
@@ -30,6 +32,7 @@ class Product {
       promoPrice: jsonData['cmb2']['_faproduct_product_data']['_faproduct_promo_price'],
       featuredImage: jsonData['cmb2']['_faproduct_product_data']['_faproduct_photos'].values.toList(),
       categoryId: jsonData['food_category'][0],
+      authorId: jsonData['author'],
     );
   }
 }

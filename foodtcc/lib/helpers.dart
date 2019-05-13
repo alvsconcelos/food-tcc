@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:foodtcc/models/Seller.dart';
 import 'package:http/http.dart' as http;
 import 'package:foodtcc/models/Product.dart';
 import 'package:foodtcc/models/TaxTerm.dart';
@@ -43,6 +44,17 @@ Future<List<Product>> getProductsByCategory(int taxID) async {
       fetchedProductList.add(Product.fromJson(productData));
     });
     return fetchedProductList;
+  } else {
+    throw Exception('Failed to load products');
+  }
+}
+
+Future<Seller> getSellerData(int authorId) async {
+  final response = await http.get('${BASE_URL}/users/${authorId}');
+
+  if (response.statusCode == 200) {
+    Seller fetchedSeller = Seller.fromJson(json.decode(response.body));
+    return fetchedSeller;
   } else {
     throw Exception('Failed to load products');
   }

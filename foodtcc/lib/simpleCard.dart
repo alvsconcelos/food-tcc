@@ -24,10 +24,10 @@ class SimpleCard extends StatelessWidget {
             children: <Widget>[
               Container(
                 width: 200,
-                height: 125,
+                height: 120,
                 // width: MediaQuery.of(context).size.width,
-                child: FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/placeholder.png',
                   image: imageAdress,
                   fit: BoxFit.cover,
                   height: 200,
@@ -45,8 +45,8 @@ class SimpleCard extends StatelessWidget {
                         title,
                         style: TextStyle(
                           fontSize: 18.0,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: "SF-Pro-Text-Regular",
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "Open Sans",
                         ),
                         softWrap: true,
                       ),

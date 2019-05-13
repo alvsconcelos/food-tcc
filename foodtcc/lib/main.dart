@@ -30,21 +30,25 @@ void main() {
         onGenerateRoute:
             router.generator, // Use our Fluro routers for this app.
         theme: ThemeData(
-          // Define the default Brightness and Colors
-
-          // Define the default Font Family
-          // fontFamily: 'Roboto',
-
-          // Define the default TextTheme. Use this to specify the default
-          // text styling for headlines, titles, bodies of text, and more.
+          accentColor: Colors.redAccent.shade400,
           textTheme: TextTheme(
-            headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+            headline: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Hind',
+                color: Colors.white),
             title: TextStyle(
               color: Colors.grey.shade800,
+              fontFamily: 'Hind',
+              fontWeight: FontWeight.bold,
               fontSize: 26,
               letterSpacing: -0.5,
             ),
-            body1: TextStyle(fontSize: 16.0),
+            body1: TextStyle(
+              color: Colors.grey.shade900,
+              fontFamily: 'Open Sans',
+              fontSize: 16,
+            ),
           ),
         )),
   );
