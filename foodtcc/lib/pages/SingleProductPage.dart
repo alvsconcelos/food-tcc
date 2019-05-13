@@ -5,7 +5,7 @@ import 'package:foodtcc/helpers.dart';
 import 'package:foodtcc/models/Product.dart';
 import 'package:foodtcc/models/Seller.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:flutter_launch/flutter_launch.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SingleProductPage extends StatefulWidget {
   final Product _selectedProduct;
@@ -299,7 +299,7 @@ class _SingleProductPageState extends State<SingleProductPage> {
               onPressed: () {
                 return whatsAppOpen(
                   _productSeller.whatsapp,
-                  _productSeller.name,
+                  widget._selectedProduct.title,
                 );
               },
               shape: RoundedRectangleBorder(
@@ -313,13 +313,13 @@ class _SingleProductPageState extends State<SingleProductPage> {
   }
 
   void whatsAppOpen(String telNum, String productName) async {
-    bool whatsapp = await FlutterLaunch.hasApp(name: "whatsapp");
 
-    if (whatsapp) {
-      await FlutterLaunch.launchWathsApp(
-          phone: telNum, message: "Olá, quero pedir o produto ${productName}");
+    final String url = Uri.encodeFull('https://api.whatsapp.com/send?phone=$telNum&text=Olá, quero pedir $productName');
+
+    if (await canLaunch(url)) {
+      await launch(url);
     } else {
-      print("Whatsapp not found");
+      throw 'Could not launch $url';
     }
   }
 }
