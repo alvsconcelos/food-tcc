@@ -29,33 +29,30 @@ class _HomePageState extends State<HomePage> {
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              backgroundColor: Colors.transparent,
-              title: Text(
-                'SliverAppBar',
-                style: TextStyle(color: Colors.redAccent, fontSize: 22),
-              ),
               centerTitle: true,
-              expandedHeight: 80,
+              pinned: true,  
+              elevation: 2,
+              forceElevated: true,
+              backgroundColor: Theme.of(context).accentColor,
+              title: Text(
+                'FoodIFPA',
+                style: TextStyle(
+                  color: Colors.white,
+                  height: 1.2,
+                  fontSize: 28,
+                  fontFamily: 'Hind',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               leading: IconButton(
                 icon: Icon(
                   Icons.menu,
-                  color: Colors.grey,
+                  color: Colors.white,
                   size: 30.0,
                 ),
                 padding: EdgeInsets.only(left: 10),
                 onPressed: () {},
               ),
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.search,
-                    color: Colors.grey,
-                    size: 30.0,
-                  ),
-                  padding: EdgeInsets.only(right: 10),
-                  onPressed: () {},
-                )
-              ],
             ),
             SliverToBoxAdapter(
               child: FeaturedProducts(),
@@ -90,8 +87,8 @@ class _ProductListState extends State<ProductList> {
     var _productsList = await getAllProducts();
 
     setState(() {
-      allProducts = _productsList;
       taxTerms = _termsList;
+      allProducts = _productsList;
     });
   }
 
@@ -139,79 +136,79 @@ class _FeaturedProductsState extends State<FeaturedProducts> {
     final double boxSize = MediaQuery.of(context).size.width - 50;
 
     return Padding(
-      padding: EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.only(top: 30, bottom: 20),
       child: Column(
-      children: <Widget>[
-        SectionTitle(
-          title: 'Destaques',
-        ),
-        Container(
-          height: 260,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: dados.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: EdgeInsets.only(left: 15),
-                child: Card(
-                  clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        width: boxSize,
-                        child: FadeInImage.memoryNetwork(
-                          placeholder: kTransparentImage,
-                          image:
-                              'https://foodapp.underbits.com.br/wp-content/uploads/2019/05/photo-1501777814630-33bc4a3c3ee7.jpg',
-                          fit: BoxFit.cover,
-                          height: 260,
-                        ),
-                      ),
-                      Container(
-                        height: 350.0,
-                        width: boxSize,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Color(0xFF2d3447).withOpacity(0.1),
-                              Color(0xFF1b1e44).withOpacity(0.8),
-                            ],
-                            stops: [0.0, 1.0],
+        children: <Widget>[
+          SectionTitle(
+            title: 'Destaques',
+          ),
+          Container(
+            height: 260,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: dados.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: EdgeInsets.only(left: 15),
+                  child: Card(
+                    clipBehavior: Clip.antiAlias,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          width: boxSize,
+                          child: FadeInImage.memoryNetwork(
+                            placeholder: kTransparentImage,
+                            image:
+                                'https://foodapp.underbits.com.br/wp-content/uploads/2019/05/photo-1501777814630-33bc4a3c3ee7.jpg',
+                            fit: BoxFit.cover,
+                            height: 260,
                           ),
                         ),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              Text(
-                                'Título da carta',
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "SF-Pro-Text-Regular",
-                                    color: Colors.white),
-                                softWrap: true,
-                              )
-                            ],
-                          ))
-                    ],
+                        Container(
+                          height: 350.0,
+                          width: boxSize,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Color(0xFF2d3447).withOpacity(0.1),
+                                Color(0xFF1b1e44).withOpacity(0.8),
+                              ],
+                              stops: [0.0, 1.0],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Text(
+                                  'Título da carta',
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: "SF-Pro-Text-Regular",
+                                      color: Colors.white),
+                                  softWrap: true,
+                                )
+                              ],
+                            ))
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-        )
-      ],
-    ),
+                );
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 }

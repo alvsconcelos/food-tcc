@@ -9,6 +9,7 @@ class Product {
   final List<dynamic> featuredImage;
   final int categoryId;
   final int authorId;
+  final int viewsCount;
 
   Product({
     @required this.id,
@@ -19,6 +20,7 @@ class Product {
     this.featuredImage,
     @required this.categoryId,
     @required this.authorId,
+    @required this.viewsCount,
   });
 
   factory Product.fromJson(Map<String, dynamic> jsonData) {
@@ -33,6 +35,15 @@ class Product {
       featuredImage: jsonData['cmb2']['_faproduct_product_data']['_faproduct_photos'].values.toList(),
       categoryId: jsonData['food_category'][0],
       authorId: jsonData['author'],
+      viewsCount: treatViewsCount(jsonData['cmb2']['_faproduct_product_data']['_faproduct_views'])
     );
   }
+}
+
+int treatViewsCount(String actualCount) {
+  if(actualCount.isEmpty || actualCount == '0') {
+    return 0;
+  }
+
+  return int.parse(actualCount);
 }

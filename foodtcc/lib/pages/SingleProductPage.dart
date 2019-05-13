@@ -19,18 +19,20 @@ class SingleProductPage extends StatefulWidget {
 class _SingleProductPageState extends State<SingleProductPage> {
   Seller _productSeller;
 
-  Future _getSeller() async {
+  Future _getSellerAndRegisterProductView() async {
     var _seller = await getSellerData(widget._selectedProduct.authorId);
-
-    setState(() {
-      _productSeller = _seller;
-    });
+    registerViewsForProduct(widget._selectedProduct.id);
+    if (this.mounted) {
+      setState(() {
+        _productSeller = _seller;
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    _getSeller();
+    _getSellerAndRegisterProductView();
   }
 
   @override
@@ -313,8 +315,8 @@ class _SingleProductPageState extends State<SingleProductPage> {
   }
 
   void whatsAppOpen(String telNum, String productName) async {
-
-    final String url = Uri.encodeFull('https://api.whatsapp.com/send?phone=$telNum&text=Olá, quero pedir $productName');
+    final String url = Uri.encodeFull(
+        'https://api.whatsapp.com/send?phone=$telNum&text=Olá, quero pedir $productName');
 
     if (await canLaunch(url)) {
       await launch(url);
