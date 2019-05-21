@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:foodtcc/pages/HomePage.dart';
 import 'package:foodtcc/pages/SingleProductPage.dart';
+import 'package:foodtcc/pages/SplashScreen.dart';
 
 void main() {
   Router router = Router();
@@ -25,7 +26,8 @@ void main() {
   runApp(
     MaterialApp(
         title: 'foodIfpa',
-        home: HomePage(),
+        // home: HomePage(),
+        home: SplashScreen(),
         debugShowCheckedModeBanner: false,
         onGenerateRoute:
             router.generator, // Use our Fluro routers for this app.

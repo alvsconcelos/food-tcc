@@ -10,6 +10,7 @@ class Seller {
   final String whatsapp;
   final String logo;
   // final Map<String, bool> paymentMethods;
+  final String deliveryTax;
   final bool isOpen;
 
   Seller({
@@ -21,6 +22,7 @@ class Seller {
     @required this.whatsapp,
     @required this.logo,
     // @required this.paymentMethods,
+    @required this.deliveryTax,
     @required this.isOpen,
   });
 
@@ -34,6 +36,7 @@ class Seller {
       phone: data['_faseller_phone'],
       whatsapp: data['_faseller_whatsapp'],
       logo: data['_faseller_logo'],
+      deliveryTax: parseDeliveryTax(data['_faseller_deliverytax']),
       isOpen: checkIfItsOpen(
         data['_faseller_open_hours'],
       ),
@@ -48,8 +51,6 @@ bool checkIfItsOpen(dynamic data) {
   final int dayNum = currentTime.weekday - 1;
   final String openHour = data['${dayNum}_open'];
   final String closeHour = data['${dayNum}_close'];
-
-  print(currentTime.day);
 
   DateTime openTime = dateFormat.parse(openHour);
   openTime = DateTime(
@@ -74,4 +75,12 @@ bool checkIfItsOpen(dynamic data) {
   }
 
   return false;
+}
+
+String parseDeliveryTax(dynamic data) {
+  if(data != null && data.toString().isNotEmpty) {
+    return data.toString();
+  }
+
+  return '0';
 }

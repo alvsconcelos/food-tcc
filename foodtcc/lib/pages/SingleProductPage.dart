@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodtcc/TitleWithIcon.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:foodtcc/helpers.dart';
+import 'package:foodtcc/TitleWithIcon.dart';
 import 'package:foodtcc/models/Product.dart';
 import 'package:foodtcc/models/Seller.dart';
-import 'package:transparent_image/transparent_image.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SingleProductPage extends StatefulWidget {
   final Product _selectedProduct;
@@ -51,8 +51,8 @@ class _SingleProductPageState extends State<SingleProductPage> {
                   children: <Widget>[
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      child: FadeInImage.memoryNetwork(
-                        placeholder: kTransparentImage,
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/placeholder.png',
                         image: widget._selectedProduct.featuredImage[0],
                         fit: BoxFit.cover,
                       ),
@@ -209,7 +209,9 @@ class _SingleProductPageState extends State<SingleProductPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    Padding(
+                      padding: EdgeInsets.only(left: 5, bottom: 10),
+                      child: Text(
                       _productSeller.name,
                       style: TextStyle(
                         fontSize: 20.0,
@@ -217,7 +219,7 @@ class _SingleProductPageState extends State<SingleProductPage> {
                         fontFamily: "Hind",
                       ),
                       softWrap: true,
-                    ),
+                    ),),
                     Padding(
                       padding: EdgeInsets.only(
                         bottom: 5,
@@ -243,7 +245,7 @@ class _SingleProductPageState extends State<SingleProductPage> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                        bottom: 5,
+                        bottom: 10,
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -258,6 +260,29 @@ class _SingleProductPageState extends State<SingleProductPage> {
                           Expanded(
                             child: Text(
                               _productSeller.phone,
+                              softWrap: true,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: 5,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(right: 5),
+                            child: Icon(
+                              Icons.local_shipping,
+                              color: _productSeller.deliveryTax == '0' ? Colors.greenAccent.shade700 : Theme.of(context).accentColor,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              _productSeller.deliveryTax == '0' ? 'Entrega gratuita' : "Taxa de entrega: R\$ ${_productSeller.deliveryTax}",
                               softWrap: true,
                             ),
                           )
