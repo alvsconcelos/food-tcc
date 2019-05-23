@@ -12,7 +12,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Timer _timer;
 
   void startDelay() {
-    _timer = new Timer(const Duration(milliseconds: 400), () {
+    _timer = new Timer(const Duration(seconds: 1), () {
       var route = new MaterialPageRoute(
         builder: (BuildContext context) => HomePage(),
       );

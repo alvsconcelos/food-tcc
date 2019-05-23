@@ -50,24 +50,18 @@ class _HomePageState extends State<HomePage> {
               elevation: 2,
               forceElevated: true,
               backgroundColor: Theme.of(context).accentColor,
-              title: Text(
-                'FoodIFPA',
-                style: TextStyle(
-                  color: Colors.white,
-                  height: 1.2,
-                  fontSize: 28,
-                  fontFamily: 'Hind',
-                  fontWeight: FontWeight.bold,
-                ),
+              expandedHeight: 65,
+              flexibleSpace: Container(
+                margin: EdgeInsets.only(top: 30),
+                child: Center(
+                    child: Image.asset(
+                  'assets/logo_top.png',
+                  height: 35,
+                )),
               ),
-              leading: IconButton(
-                icon: Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                padding: EdgeInsets.only(left: 10),
-                onPressed: () {},
+              bottom: PreferredSize(
+                preferredSize: Size(5, 5),
+                child: SizedBox(),
               ),
             ),
             SliverToBoxAdapter(
@@ -113,7 +107,7 @@ class FeaturedProducts extends StatelessWidget {
         min(_productsList.length, 4); // Set the featured products count (4)
 
     return Padding(
-      padding: EdgeInsets.only(top: 30, bottom: 20),
+      padding: EdgeInsets.only(top: 20, bottom: 20),
       child: Column(
         children: <Widget>[
           SectionTitle(
@@ -126,7 +120,11 @@ class FeaturedProducts extends StatelessWidget {
               itemCount: _featuredProductsCount,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
-                  padding: EdgeInsets.only(left: 15, right: _featuredProductsCount == (index + 1) ? 15 : 0), // Check if its the last element on the carousel, then if it is, adds a right padding.
+                  padding: EdgeInsets.only(
+                      left: 15,
+                      right: _featuredProductsCount == (index + 1)
+                          ? 15
+                          : 0), // Check if its the last element on the carousel, then if it is, adds a right padding.
                   child: GestureDetector(
                     onTap: () {
                       var route = new MaterialPageRoute(
